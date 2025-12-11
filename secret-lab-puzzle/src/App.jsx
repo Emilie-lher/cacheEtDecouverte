@@ -76,24 +76,24 @@ export default function App() {
 
             <div className="flex justify-center gap-6">
   <img
-    src={key1Unlocked ? "\src\assets\icons8-verrouiller-2-100.png" : "\src\assets\icons8-déverrouiller-2-90.png"}
+    src={key1Unlocked ? "/src/assets/icons8-déverrouiller-2-90.png" : "/src/assets/icons8-verrouiller-2-100.png"}
     style={keyImg(key1Unlocked)}
     onClick={() => setStep(1)}
   />
   <img
-    src={key2Unlocked ? "\src\assets\icons8-verrouiller-2-100.png" : "\src\assets\icons8-déverrouiller-2-90.png"}
+    src={key2Unlocked ? "/src/assets/icons8-déverrouiller-2-90.png" : "/src/assets/icons8-verrouiller-2-100.png"}
     style={keyImg(key2Unlocked)}
     onClick={() => setStep(2)}
   />
   <img
-    src={key3Unlocked ? "\src\assets\icons8-verrouiller-2-100.png" : "\src\assets\icons8-déverrouiller-2-90.png"}
+    src={key3Unlocked ? "/src/assets/icons8-déverrouiller-2-90.png" : "/src/assets/icons8-verrouiller-2-100.png"}
     style={keyImg(key3Unlocked)}
     onClick={() => setStep(3)}
   />
 </div>
 
 
-            <p className="mt-6 italic">Chaque cle tourne seulement si l'epreuve est reussie...</p>
+            <p className="mt-6 italic">Chaque clé tourne seulement si l'épreuve est réussie...</p>
           </div>
         )}
 
