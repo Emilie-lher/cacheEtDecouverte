@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function App() {
   const [step, setStep] = useState(0);
@@ -6,51 +6,30 @@ export default function App() {
   const [key2Unlocked, setKey2Unlocked] = useState(false);
   const [key3Unlocked, setKey3Unlocked] = useState(false);
 
-  // COLORS PUZZLE (KEY 1)
-  const ALL_COLORS = [
-    { name: "Vert", hex: "#00ff00" },
-    { name: "Violet", hex: "#800080" },
-    { name: "Jaune", hex: "#ffff00" },
-    { name: "Rose", hex: "#ff00ff" },
-    { name: "Orange", hex: "#ff8800" },
-    { name: "Rouge", hex: "#ff0000" },
-    { name: "Bleu", hex: "#0000ff" }
-  ];
-
-  const CORRECT_ORDER = ["#00ff00", "#800080", "#ffff00", "#ff00ff"]; // Vert > Violet > Jaune > Rose
-  const [selectedColors, setSelectedColors] = useState([]);
-
-  function pickColor(hex) {
-    if (key1Unlocked) return;
-    if (selectedColors.length >= 4) return;
-    setSelectedColors((p) => [...p, hex]);
-  }
-  function resetColors() {
-    setSelectedColors([]);
-  }
+  // KEY 1
+  const [key1Input, setKey1Input] = useState("");
   function validateKey1() {
-    if (selectedColors.length !== 4) return alert("Il faut 4 couleurs");
-    for (let i = 0; i < 4; i++) if (selectedColors[i] !== CORRECT_ORDER[i]) return alert("Mauvais ordre");
-    setKey1Unlocked(true);
+    if (key1Input.trim() === "3") setKey1Unlocked(true);
+    else alert("Mauvais chiffre");
   }
 
   // KEY 2
   const [key2Input, setKey2Input] = useState("");
   function validateKey2() {
-    if (key2Input.trim() === "3") setKey2Unlocked(true);
+    if (key2Input.trim() === "7") setKey2Unlocked(true);
     else alert("Mauvais chiffre");
   }
 
   // KEY 3
   const [key3Input, setKey3Input] = useState("");
   function validateKey3() {
-    if (key3Input.trim() === "9") setKey3Unlocked(true);
+    if (key3Input.trim() === "7") setKey3Unlocked(true);
     else alert("Mauvais chiffre");
   }
 
   // STYLE PARCHMENT
   const parchment = {
-     padding: "2rem",
+    padding: "2rem",
     borderRadius: "12px",
     boxShadow: "0 0 25px rgba(0,0,0,0.6)",
     color: "#3b2f1e",
@@ -65,111 +44,195 @@ export default function App() {
   });
 
   return (
-    <div className='min-h-screen p-0 m-0 text-white flex justify-center items-center bg-cover bg-center' style={{ backgroundColor:'#f5e6c5' }}>
-      <div style={{ width: "700px" }}>
+    <div
+      style={{ 
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "#f5e6c5",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "auto"
+      }}
+    >
+      <div style={{ width: "100%", maxWidth: "1200px", padding: "2rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
 
         {/* MENU - 3 CLES */}
         {step === 0 && (
-          <div style={parchment} className="text-center">
-            <h1 className="text-3xl mb-4 font-bold">Le Grand Cadenas Antique</h1>
-            <p className="mb-6 text-lg">Choisis une cle pour resoudre son epreuve :</p>
+          <div style={{...parchment, width: "100%", maxWidth: "800px", textAlign: "center"}}>
+            <h1 style={{ fontSize: "1.875rem", marginBottom: "1rem", fontWeight: "bold" }}>
+              Le Grand Cadenas Antique
+            </h1>
+            <p style={{ marginBottom: "1.5rem", fontSize: "1.125rem" }}>
+              Choisis une clé pour résoudre son épreuve :
+            </p>
 
-            <div className="flex justify-center gap-6">
-  <img
-    src={key1Unlocked ? "/src/assets/icons8-déverrouiller-2-90.png" : "/src/assets/icons8-verrouiller-2-100.png"}
-    style={keyImg(key1Unlocked)}
-    onClick={() => setStep(1)}
-  />
-  <img
-    src={key2Unlocked ? "/src/assets/icons8-déverrouiller-2-90.png" : "/src/assets/icons8-verrouiller-2-100.png"}
-    style={keyImg(key2Unlocked)}
-    onClick={() => setStep(2)}
-  />
-  <img
-    src={key3Unlocked ? "/src/assets/icons8-déverrouiller-2-90.png" : "/src/assets/icons8-verrouiller-2-100.png"}
-    style={keyImg(key3Unlocked)}
-    onClick={() => setStep(3)}
-  />
-</div>
+            <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem" }}>
+              <img
+                src="https://img.icons8.com/ios-filled/100/3b2f1e/lock.png"
+                alt="Clé 1"
+                style={keyImg(key1Unlocked)}
+                onClick={() => setStep(1)}
+              />
+              <img
+                src="https://img.icons8.com/ios-filled/100/3b2f1e/lock.png"
+                alt="Clé 2"
+                style={keyImg(key2Unlocked)}
+                onClick={() => setStep(2)}
+              />
+              <img
+                src="https://img.icons8.com/ios-filled/100/3b2f1e/lock.png"
+                alt="Clé 3"
+                style={keyImg(key3Unlocked)}
+                onClick={() => setStep(3)}
+              />
+            </div>
 
-
-            <p className="mt-6 italic">Chaque clé tourne seulement si l'épreuve est réussie...</p>
+            <p style={{ marginTop: "1.5rem", fontStyle: "italic" }}>
+              Chaque clé tourne seulement si l'épreuve est réussie...
+            </p>
           </div>
         )}
 
-        {/* KEY 1 - COLORS */}
+        {/* KEY 1 */}
         {step === 1 && (
-          <div style={parchment}>
-            <h2 className="text-2xl font-bold mb-4">Cle 1 - Ordre des Fioles</h2>
-            <p>Replace les fioles dans l'ordre exact :</p>
-            <b>Vert > Violet > Jaune > Rose</b>
+          <div style={{...parchment, width: "100%", maxWidth: "600px", textAlign: "center"}}>
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1.5rem" }}>
+              Clé 1
+            </h2>
 
-            <div className="flex flex-wrap gap-2 my-4">
-              {ALL_COLORS.map((c) => (
-                <button key={c.hex} className="w-12 h-12 rounded border" style={{ background: c.hex }} onClick={() => pickColor(c.hex)} />
-              ))}
-            </div>
-
-            <div className="flex gap-2 mb-3">
-              {selectedColors.map((c, i) => (
-                <div key={i} className="w-12 h-12 border rounded" style={{ background: c }} />
-              ))}
-            </div>
+            <p style={{ fontSize: "1.125rem", marginBottom: "2rem" }}>
+              Inscrivez le chiffre résultant de l'énigme
+            </p>
 
             {!key1Unlocked && (
-              <>
-                <button className="px-3 py-1 bg-blue-600 rounded" onClick={validateKey1}>Valider</button>
-                <button className="px-3 py-1 bg-gray-600 rounded ml-2" onClick={resetColors}>Reinitialiser</button>
-              </>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+                <input
+                  type="text"
+                  className="p-2 bg-slate-200 rounded w-20 text-black"
+                  style={{ padding: "0.5rem", backgroundColor: "#e2e8f0", borderRadius: "0.5rem", width: "80px", textAlign: "center", fontSize: "1.5rem", border: "2px solid #3b2f1e" }}
+                  maxLength={1}
+                  value={key1Input}
+                  onChange={(e) => setKey1Input(e.target.value.replace(/[^0-9]/g, ""))}
+                />
+                <button
+                  className="px-3 py-1 bg-blue-600 text-white rounded"
+                  style={{ padding: "0.5rem 1.5rem", backgroundColor: "#2563eb", color: "white", borderRadius: "0.5rem", cursor: "pointer" }}
+                  onClick={validateKey1}
+                >
+                  Valider
+                </button>
+              </div>
             )}
 
-            {key1Unlocked && <div className="text-green-600 text-lg mt-4">La cle tourne !</div>}
+            {key1Unlocked && (
+              <div style={{ color: "#15803d", fontSize: "1.25rem", marginTop: "1rem", fontWeight: "bold" }}>
+                ✓ La clé tourne !
+              </div>
+            )}
 
-            <button className="mt-6 px-3 py-1 bg-slate-700 rounded" onClick={() => setStep(0)}>Retour</button>
+            <button
+              className="mt-6 px-3 py-1 bg-slate-700 text-white rounded"
+              style={{ marginTop: "2rem", padding: "0.5rem 1.5rem", backgroundColor: "#334155", color: "white", borderRadius: "0.5rem", cursor: "pointer" }}
+              onClick={() => setStep(0)}
+            >
+              ← Retour
+            </button>
           </div>
         )}
 
         {/* KEY 2 */}
         {step === 2 && (
-          <div style={parchment}>
-            <h2 className="text-2xl font-bold mb-4">Cle 2 - Puzzle</h2>
-            <p>Trouve le chiffre cache dans le puzzle imprime :</p>
+          <div style={{...parchment, width: "100%", maxWidth: "600px", textAlign: "center"}}>
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1.5rem" }}>
+              Clé 2
+            </h2>
+
+            <p style={{ fontSize: "1.125rem", marginBottom: "2rem" }}>
+              Inscrivez le chiffre résultant de l'énigme
+            </p>
 
             {!key2Unlocked && (
-              <div className="flex gap-2 mt-4">
-                <input className="p-2 bg-slate-200 rounded w-20 text-black" maxLength={1} value={key2Input} onChange={(e) => setKey2Input(e.target.value.replace(/[^0-9]/g, ""))} />
-                <button className="px-3 py-1 bg-blue-600 rounded text-white" onClick={validateKey2}>Valider</button>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+                <input
+                  type="text"
+                  style={{ padding: "0.5rem", backgroundColor: "#e2e8f0", borderRadius: "0.5rem", width: "80px", textAlign: "center", fontSize: "1.5rem", border: "2px solid #3b2f1e" }}
+                  maxLength={1}
+                  value={key2Input}
+                  onChange={(e) => setKey2Input(e.target.value.replace(/[^0-9]/g, ""))}
+                />
+                <button
+                  style={{ padding: "0.5rem 1.5rem", backgroundColor: "#2563eb", color: "white", borderRadius: "0.5rem", cursor: "pointer" }}
+                  onClick={validateKey2}
+                >
+                  Valider
+                </button>
               </div>
             )}
 
-            {key2Unlocked && <div className="text-green-700 text-lg mt-4">La cle tourne !</div>}
+            {key2Unlocked && (
+              <div style={{ color: "#15803d", fontSize: "1.25rem", marginTop: "1rem", fontWeight: "bold" }}>
+                ✓ La clé tourne !
+              </div>
+            )}
 
-            <button className="mt-6 px-3 py-1 bg-slate-700 rounded text-white" onClick={() => setStep(0)}>Retour</button>
+            <button
+              style={{ marginTop: "2rem", padding: "0.5rem 1.5rem", backgroundColor: "#334155", color: "white", borderRadius: "0.5rem", cursor: "pointer" }}
+              onClick={() => setStep(0)}
+            >
+              ← Retour
+            </button>
           </div>
         )}
 
         {/* KEY 3 */}
         {step === 3 && (
-          <div style={parchment}>
-            <h2 className="text-2xl font-bold mb-4">Cle 3 - Dernier Chiffre</h2>
-            <p>Entre le dernier chiffre :</p>
+          <div style={{...parchment, width: "100%", maxWidth: "600px", textAlign: "center"}}>
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1.5rem" }}>
+              Clé 3
+            </h2>
+
+            <p style={{ fontSize: "1.125rem", marginBottom: "2rem" }}>
+              Inscrivez le chiffre résultant de l'énigme
+            </p>
 
             {!key3Unlocked && (
-              <div className="flex gap-2 mt-4">
-                <input className="p-2 bg-slate-200 rounded w-20 text-black" maxLength={1} value={key3Input} onChange={(e) => setKey3Input(e.target.value.replace(/[^0-9]/g, ""))} />
-                <button className="px-3 py-1 bg-blue-600 rounded text-white" onClick={validateKey3}>Valider</button>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+                <input
+                  type="text"
+                  style={{ padding: "0.5rem", backgroundColor: "#e2e8f0", borderRadius: "0.5rem", width: "80px", textAlign: "center", fontSize: "1.5rem", border: "2px solid #3b2f1e" }}
+                  maxLength={1}
+                  value={key3Input}
+                  onChange={(e) => setKey3Input(e.target.value.replace(/[^0-9]/g, ""))}
+                />
+                <button
+                  style={{ padding: "0.5rem 1.5rem", backgroundColor: "#2563eb", color: "white", borderRadius: "0.5rem", cursor: "pointer" }}
+                  onClick={validateKey3}
+                >
+                  Valider
+                </button>
               </div>
             )}
 
             {key3Unlocked && (
-              <div className="text-green-700 text-xl font-bold mt-6">
-                Le cadenas s'ouvre ! Code final : <span className="text-red-700 text-3xl">4</span>
+              <div style={{ color: "#15803d", fontSize: "1.25rem", marginTop: "1rem", fontWeight: "bold" }}>
+                ✓ Le cadenas s'ouvre ! Code final :
+                <span style={{ color: "#b91c1c", fontSize: "2rem", marginLeft: "0.5rem" }}>4</span>
               </div>
             )}
 
-            <button className="mt-6 px-3 py-1 bg-slate-700 rounded text-white" onClick={() => setStep(0)}>Retour</button>
+            <button
+              style={{ marginTop: "2rem", padding: "0.5rem 1.5rem", backgroundColor: "#334155", color: "white", borderRadius: "0.5rem", cursor: "pointer" }}
+              onClick={() => setStep(0)}
+            >
+              ← Retour
+            </button>
           </div>
         )}
+
       </div>
     </div>
   );
